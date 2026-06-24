@@ -24,4 +24,15 @@ app.use('/api/admin', require('./routes/admin'));
 
 // SPA fallback: serve index.html for all non-API routes
 app.get('*', (req, res) => {
-  res.sendFile(path.j
+  res.sendFile(path.join(publicPath, 'index.html'));
+});
+
+connectDatabases()
+  .then(() => {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+  })
+  .catch(err => {
+    console.error('Database connection error:', err.message);
+    process.exit(1);
+  });
