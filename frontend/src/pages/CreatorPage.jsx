@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import VideoCard from '../components/VideoCard';
 
 export default function CreatorPage() {
@@ -18,7 +18,7 @@ export default function CreatorPage() {
     const fetchVideos = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`/api/videos?creator=${encodeURIComponent(creatorName)}&page=${page}&limit=24`);
+        const { data } = await api.get(`/api/videos?creator=${encodeURIComponent(creatorName)}&page=${page}&limit=24`);
         if (page === 1) setVideos(data.videos);
         else setVideos(prev => [...prev, ...data.videos]);
         setHasMore(data.page < data.pages);

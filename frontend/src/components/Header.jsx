@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../context/AuthContext';
 
 export default function Header() {
@@ -10,7 +10,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('/api/categories').then(({ data }) => setCategories(data)).catch(() => {});
+    api.get('/api/categories').then(({ data }) => setCategories(data)).catch(() => {});
   }, []);
 
   const handleSearch = (e) => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import VideoGrid from '../components/VideoGrid';
 
 export default function CategoryPage() {
@@ -11,11 +11,11 @@ export default function CategoryPage() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get('/api/categories').then(({ data }) => {
+    api.get('/api/categories').then(({ data }) => {
       const cat = data.find((c) => c.slug === slug);
       setCategory(cat);
       if (cat) {
-        return axios.get(`/api/videos?category=${cat._id}&limit=50`);
+        return api.get(`/api/videos?category=${cat._id}&limit=50`);
       }
       return { data: { videos: [] } };
     }).then(({ data }) => {

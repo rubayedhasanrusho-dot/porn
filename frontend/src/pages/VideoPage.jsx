@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import VideoGrid from '../components/VideoGrid';
 
 function getHostname(u) {
@@ -20,7 +20,7 @@ export default function VideoPage() {
     fetched.current = true;
 
     setLoading(true);
-    axios.get(`/api/videos/${id}`)
+    api.get(`/api/videos/${id}`)
       .then(({ data }) => {
         setVideo(data);
         document.title = data.title + ' — Tubemax';
@@ -30,7 +30,7 @@ export default function VideoPage() {
         setMeta('meta[property="og:title"]', data.title);
         setMeta('meta[property="og:description"]', desc);
         setMeta('meta[property="og:image"]', data.thumbnail || '');
-        return axios.get('/api/videos?limit=8');
+        return api.get('/api/videos?limit=8');
       })
       .then(({ data }) => setRelated(data.videos.filter(v => v._id !== id)))
       .catch(() => {})

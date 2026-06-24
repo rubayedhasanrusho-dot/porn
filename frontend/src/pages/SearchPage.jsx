@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import VideoGrid from '../components/VideoGrid';
 
 export default function SearchPage() {
@@ -13,7 +13,7 @@ export default function SearchPage() {
   useEffect(() => {
     if (!q) { setVideos([]); setTotal(0); return; }
     setLoading(true);
-    axios.get(`/api/videos/merged-search?q=${encodeURIComponent(q)}`)
+    api.get(`/api/videos/merged-search?q=${encodeURIComponent(q)}`)
       .then(({ data }) => {
         setVideos(data.videos || []);
         setTotal(data.total || 0);

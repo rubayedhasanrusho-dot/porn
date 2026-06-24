@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import VideoGrid from '../components/VideoGrid';
 
 export default function HomePage() {
@@ -11,10 +11,10 @@ export default function HomePage() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get('/api/scrape/auto')
+    api.get('/api/scrape/auto')
       .then(({ data }) => {
         setVideos(data.videos || []);
-        return axios.get('/api/videos?sort=trending&limit=8');
+        return api.get('/api/videos?sort=trending&limit=8');
       })
       .then(({ data }) => {
         const t = data.videos || [];
@@ -22,7 +22,7 @@ export default function HomePage() {
         setVideos(prev => prev.filter(v => !t.some(tv => tv._id === v._id)));
       })
       .catch(() => {
-        axios.get('/api/videos?sort=latest&limit=24').then(({ data }) => {
+        api.get('/api/videos?sort=latest&limit=24').then(({ data }) => {
           setVideos(data.videos || []);
         }).catch(() => {});
       })
@@ -31,7 +31,7 @@ export default function HomePage() {
 
   const loadMore = () => {
     const next = page + 1;
-    axios.get(`/api/videos?sort=latest&limit=24&page=${next}`)
+    api.get(`/api/videos?sort=latest&limit=24&page=${next}`)
       .then(({ data }) => {
         if (data.videos && data.videos.length > 0) {
           setVideos(prev => [...prev, ...data.videos]);
